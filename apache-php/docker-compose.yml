@@ -1,8 +1,8 @@
 version: "3"
 services:
-  apache-container:
-    image: test_httpd
+  php-container:
+    image: test_php
     ports:
-      - 8080:8080
+      - 80:80
     volumes:
-      - /Users/uedahiroaki/workspace/docker-pr/temporary:/usr/local/apache2/htdocs
+      - /Users/uedahiroaki/workspace/docker-pr/apache-php/temporary/:/var/www/html/

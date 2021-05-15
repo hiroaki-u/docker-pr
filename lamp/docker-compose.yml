@@ -3,7 +3,9 @@ version: "3.7"
 services:
   mysql:
     image: mysql:5.7
-    restart: aliways
+    networks:
+      - testnetwork
+    restart: always
     volumes:
       - database-volume:/var/lib/mysql
     environment:
@@ -14,22 +16,28 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    restart: aliways
-    ports: 8080:80
+    networks:
+      - testnetwork
+    restart: always
+    ports:
+      - 8080:80
     environment:
       - PMA_ARBITRARY=1
     depends_on:
       - mysql
 
   php-apache:
-    image: php_test
-    restart: aliways
+    build: ./php
+    networks:
+      - testnetwork
+    restart: always
     ports:
-      - "80:80"
+      - 80:80
     volumes:
       - ./htdocs:/var/www/html
     depends_on:
       - mysql
-
+networks:
+  testnetwork:
 volumes:
   database-volume: {}

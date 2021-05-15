@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.7
+    restart: aliways
+    volumes:
+      - database-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "test_root_pass"
+      MYSQL_DATABASE: "test_database"
+      MYSQL_USER: "database_user"
+      MYSQ_PASSWORD: "test_pass"
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: aliways
+    ports: 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - mysql
+
+  php-apache:
+    image: php_test
+    restart: aliways
+    ports:
+      - "80:80"
+    volumes:
+      - ./htdocs:/var/www/html
+    depends_on:
+      - mysql
+
+volumes:
+  database-volume: {}
